@@ -17,6 +17,9 @@ namespace ModbusTcpMasterDeviceSimulator
             //測試裝置IP為192.168.50.2。PLC設置為動態IP，由路由器綁定MAC位址
             tcpClient.Connect(new IPEndPoint(IPAddress.Parse("192.168.50.2"), 502));
             IModbusMaster modbusMaster = modbusFactory.CreateMaster(tcpClient);
+            modbusMaster.Transport.ReadTimeout = 1000;//讀取超時，讀取時超過1000ms發出異常
+            modbusMaster.Transport.WriteTimeout = 1000;//寫入超時，寫入時超過1000ms發出異常
+            modbusMaster.Transport.Retries = 3;//重試3次，讀取或寫入失敗時，會重試次數
 
             while (true)
             {
